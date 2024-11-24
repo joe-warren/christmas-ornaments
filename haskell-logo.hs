@@ -7,6 +7,9 @@
     --extra-dep opencascade-hs-0.4.0.0
 -}
 
+-- print two of these, one of them mirrored, and then glue them back to back
+-- to get a more symetrical ornament
+
 import qualified Waterfall
 import Linear
 import Control.Lens ((^.))
