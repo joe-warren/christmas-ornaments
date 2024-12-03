@@ -43,7 +43,7 @@ hexagon = Waterfall.pathFrom2D (unit _x)
 joiner :: Waterfall.Solid
 joiner = mconcat
                 [ Waterfall.centeredCube 
-                    & Waterfall.scale (V3 0.4 10 5 )  
+                    & Waterfall.scale (V3 0.6 10 5 )  
                     & Waterfall.translate (unit _y ^* 13)
                     & Waterfall.rotate (unit _z) (i* pi/2)
                 | i <- [0 ..3]
