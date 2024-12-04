@@ -8,7 +8,6 @@ import Linear
 import Control.Lens ((^.))
 import Data.Function ((&))
 import Waterfall.SVG (parsePath)
-import Distribution.SPDX (LicenseId(APL_1_0))
 
 pythonLogo :: Waterfall.Solid
 pythonLogo = 
