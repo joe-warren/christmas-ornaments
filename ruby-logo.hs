@@ -53,16 +53,19 @@ hexagon = Waterfall.pathFrom2D (unit _x)
 ornament :: Waterfall.Solid
 ornament = 
     let 
-        Just (lo, hi) = Waterfall.axisAlignedBoundingBox rubyLogo
+        rubyLogo' = Waterfall.rotate (unit _y) (pi/4) rubyLogo
+        com = Waterfall.centerOfMass rubyLogo'
+        Just (lo, hi) = Waterfall.axisAlignedBoundingBox rubyLogo'
         hoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 2 $ circle) (Waterfall.fromPath circle)
         hoopScale = 0.05
         positionedHoop = hoop 
             & Waterfall.uScale hoopScale
             & Waterfall.rotate (unit _x) (pi/2) 
-            & Waterfall.translate (unit _z ^* ((hi ^. _z) + hoopScale))
+            & Waterfall.translate (unit _z ^* (hi ^. _z))
+            & Waterfall.translate (unit _x ^* (com ^. _x))
         width = (hi - lo) ^. _x 
         scaleFac = 40 / width
-    in Waterfall.uScale scaleFac (rubyLogo <> positionedHoop)
+    in Waterfall.uScale scaleFac (rubyLogo' <> positionedHoop)
 
 
 main :: IO ()
