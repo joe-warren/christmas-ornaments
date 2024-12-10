@@ -20,3 +20,4 @@ Generated using Haskell & [Waterfall CAD](https://hackage.haskell.org/package/wa
 ![BigQuery Tree Ornament](images/14.jpg)
 ![Terraform Ornament](images/15.jpg)
 ![Rust Ornament](images/16.jpg)
+![Ruby Ornament](images/17.jpg)
