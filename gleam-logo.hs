@@ -1,3 +1,13 @@
+#!/usr/bin/env stack
+{- stack script --resolver lts-23.16 
+    --package linear
+    --package lens
+    --package waterfall-cad
+    --package waterfall-cad-svg
+    --extra-dep waterfall-cad-svg-0.5.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
+-}
 import qualified Waterfall
 import Linear
 import Control.Lens ((^.), (.~))
@@ -19,7 +29,7 @@ gleamLogo isHappy =
         
         Right innerPath = 
             parsePath "M 932.34,96.6134 c 65.05335,-5.157376 90.7751,65.75546 130.4471,104.70231 80.9572,95.75346 156.7666,196.22159 241.3284,288.67696 83.3663,77.22163 201.5827,52.87508 304.7259,60.53885 100.8131,3.96329 202.169,1.77869 302.6178,9.86688 78.6844,26.13094 39.5096,109.14546 3.0842,154.02414 -73.5697,118.13202 -153.3203,232.75421 -222.6349,353.30466 -47.8333,103.1065 11.8687,208.0499 36.4344,308.5087 27.2929,96.8999 60.6474,192.4096 83.8917,290.238 -0.7602,82.8896 -91.8282,71.4007 -145.8909,50.6686 -135.1868,-33.3329 -268.9554,-73.6186 -405.1217,-102.1592 -112.826,-13.517 -194.2169,75.599 -282.21431,129.9591 -83.91958,55.9699 -164.65782,117.2554 -250.71107,169.6602 -79.02277,25.0437 -96.40457,-64.9896 -93.28232,-122.8057 -9.98107,-138.7204 -12.86397,-278.2421 -27.72646,-416.4134 C 585.29208,1263.8747 475.28288,1214.1278 396.3233,1147.3329 317.17342,1084.9744 233.96234,1027.2819 157.53013,961.801 109.31957,894.35976 189.90126,850.28389 245.73666,835.32616 374.76121,782.91651 506.72244,736.97175 633.72354,680.10302 733.0703,624.75256 746.49637,504.83734 785.73535,409.14079 820.69895,314.66725 849.93866,217.74969 888.73042,124.91072 898.70995,110.15773 914.75639,99.621439 932.335,96.6154 Z"
-        logoOuter = mconcat . fmap (Waterfall.prism 3 . Waterfall.fromPath) $ outerPath
+        logoOuter = mconcat . fmap (Waterfall.prism 3 . Waterfall.makeShape) $ outerPath
         
         Right facePathsRegular = fmap mconcat . sequence $
                 [ parsePath "M 1423.7,1032.45 c 30.5013,-4.94 56.3959,-29.6722 62.962,-59.82778 7.1579,-29.74884 -5.1141,-62.9729 -30.0071,-80.80645 -24.1466,-18.26209 -58.9873,-20.33401 -85.1855,-5.20325 -27.2794,14.97537 -43.6521,47.25107 -39.4003,78.11202 3.3296,30.14188 25.8589,56.88416 54.9086,65.47576 11.8325,3.6609 24.5309,4.4196 36.7223,2.2497 z"
@@ -34,9 +44,9 @@ gleamLogo isHappy =
                 ]
         facePaths = if isHappy then facePathsHappy else facePathsRegular
 
-        logoInner = Waterfall.translate (unit _z ^* 1.5) .  mconcat . fmap (Waterfall.prism 3 . Waterfall.fromPath) $ innerPath
+        logoInner = Waterfall.translate (unit _z ^* 1.5) .  mconcat . fmap (Waterfall.prism 3 . Waterfall.makeShape) $ innerPath
 
-        logoFace = mconcat . fmap (Waterfall.prism 3 . Waterfall.fromPath) $ facePaths
+        logoFace = mconcat . fmap (Waterfall.prism 3 . Waterfall.makeShape) $ facePaths
 
         rawLogo = (logoOuter `Waterfall.difference` logoInner) <> logoFace
 
@@ -55,7 +65,7 @@ circle = Waterfall.pathFrom (unit _x)
 
 ornament :: Bool -> Waterfall.Solid
 ornament isHappy = 
-    let rawHoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.fromPath circle)
+    let rawHoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.makeShape circle)
         hoopClipped = rawHoop `Waterfall.intersection` (Waterfall.centeredCube & Waterfall.translate (unit _z ^* 0.5) & Waterfall.uScale 10)
         hoopPositioned = hoopClipped 
             & Waterfall.translate (unit _x ^* 11)

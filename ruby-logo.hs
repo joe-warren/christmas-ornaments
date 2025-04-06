@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 import qualified Waterfall
@@ -21,12 +21,9 @@ rubyLogo =
         pathD = pathB & Waterfall.rotate (unit _z) angle & Waterfall.scale (V3 (cos angle) (cos angle) 1)
         pathE = circle & Waterfall.fromPath2D & Waterfall.uScale 0.4 & Waterfall.rotate (unit _z) angle & Waterfall.translate (unit _z ^* 0.55)
 
-        precision = 1e-6
-        pointedLoft = Waterfall.pointedLoft precision
-        loft = Waterfall.loft precision
-        partA = pointedLoft (Just (unit _z ^* (-1.25))) [pathA] Nothing
-        partB =  loft [pathA, pathB] `Waterfall.intersection` loft [pathC, pathD]
-        partC =  loft [pathD, pathE]
+        partA = Waterfall.pointedLoft (Just (unit _z ^* (-1.25))) [pathA] Nothing
+        partB =  Waterfall.loft [pathA, pathB] `Waterfall.intersection` Waterfall.loft [pathC, pathD]
+        partC =  Waterfall.loft [pathD, pathE]
     in (partA <> partB <> partC) 
 
     
@@ -56,7 +53,7 @@ ornament =
         rubyLogo' = Waterfall.rotate (unit _y) (pi/4) rubyLogo
         com = Waterfall.centerOfMass rubyLogo'
         Just (lo, hi) = Waterfall.axisAlignedBoundingBox rubyLogo'
-        hoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 2 $ circle) (Waterfall.fromPath circle)
+        hoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 2 $ circle) (Waterfall.makeShape circle)
         hoopScale = 0.05
         positionedHoop = hoop 
             & Waterfall.uScale hoopScale

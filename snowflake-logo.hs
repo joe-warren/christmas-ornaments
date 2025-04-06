@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 -- print two of these, one of them mirrored, and then glue them back to back
@@ -46,7 +46,7 @@ ornament =
         snowflakeLogo' = snowflakeLogo
             & Waterfall.translate (unit _z ^* 0.5) 
             & Waterfall.scale (V3 1 1 5)
-        rawHoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.fromPath circle)
+        rawHoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.makeShape circle)
         hoopClipped = rawHoop `Waterfall.intersection` (Waterfall.centeredCube & Waterfall.translate (unit _z ^* 0.5) & Waterfall.uScale 10)
         hoopPositioned = hoopClipped 
             & Waterfall.uScale 2

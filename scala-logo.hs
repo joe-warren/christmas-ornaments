@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 -- short-description: Scala Logo

@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 -- print two of these, one of them mirrored, and then glue them back to back
@@ -34,7 +34,7 @@ kotlinLogo =
             , Waterfall.lineTo (V2 20 0)
             ]
           ]
-        solidify x = Waterfall.prism x . Waterfall.fromPath . Waterfall.closeLoop 
+        solidify x = Waterfall.prism x . Waterfall.makeShape . Waterfall.closeLoop 
     in (Waterfall.translate (unit _z ^* 2) $ solidify 36 logoPath) <> mconcat (solidify 40 <$> highlightPaths) 
 
 circle :: Waterfall.Path2D
@@ -48,7 +48,7 @@ ornament =
   let logo = kotlinLogo & 
           Waterfall.translate (unit _z ^* (-20)) & 
           Waterfall.rotate (unit _y) (-pi/2)
-      hoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.fromPath circle)
+      hoop = Waterfall.sweep (Waterfall.fromPath2D . Waterfall.uScale2D 3 $ circle) (Waterfall.makeShape circle)
       positionedHoop = hoop &
             Waterfall.uScale 2 &
             Waterfall.rotate (unit _x) (pi/2) &

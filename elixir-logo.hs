@@ -1,12 +1,18 @@
+#!/usr/bin/env stack
+{- stack script --resolver lts-23.16 
+    --package linear
+    --package lens
+    --package waterfall-cad
+    --package waterfall-cad-svg
+    --extra-dep waterfall-cad-svg-0.5.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
+-}
 import qualified Waterfall
 import Linear
 import Control.Lens ((^.))
 import Data.Function ((&))
 import Waterfall.SVG (parsePath)
-
--- This code makes heavy use of a module called "Waterfall.SVG"
--- I plan on including this into the opencascade-hs monorepo, however need to clean it up first
--- Until I've done so, running this will be moderately difficult
 
 -- print two of these, one of them mirrored, and then glue them back to back
 -- to get a more symetrical ornament
@@ -21,7 +27,7 @@ elixirLogo =
             ]
 
         rawLogo =  Waterfall.translate (unit _z ^* 3) . Waterfall.rotate (unit _x) pi $
-            mconcat . fmap (Waterfall.prism 3 . Waterfall.fromPath) $ paths
+            mconcat . fmap (Waterfall.prism 3 . Waterfall.makeShape) $ paths
         Just (lo, hi) = Waterfall.axisAlignedBoundingBox rawLogo
         scale = 30 / (hi ^. _x - lo ^. _x) 
         scaledLogo = rawLogo &

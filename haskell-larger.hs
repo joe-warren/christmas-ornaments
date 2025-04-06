@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 -- print two of these, one of them mirrored, and then glue them back to back
@@ -62,7 +62,7 @@ haskellLogo =
             [ Waterfall.unitCube & Waterfall.scale (V3 10 1 0.75) & Waterfall.translate (V3 5 4 0)
             , Waterfall.unitCube & Waterfall.scale (V3 10 1 0.75) & Waterfall.translate (V3 5 7 0)
             ]
-        logo = bevelLarger . mconcat . fmap (Waterfall.prism 2 . Waterfall.fromPath . Waterfall.closeLoop) $ paths
+        logo = bevelLarger . mconcat . fmap (Waterfall.prism 2 . Waterfall.makeShape . Waterfall.closeLoop) $ paths
     in logo <> connectors
 
 ornament :: Waterfall.Solid

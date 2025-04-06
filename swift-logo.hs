@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 -- print two of these, one of them mirrored, and then glue them back to back
@@ -43,7 +43,7 @@ swiftLogo =
                 ]
                 
         rawLogo = Waterfall.translate (unit _z ^* 3) . Waterfall.rotate (unit _x) pi $
-            Waterfall.prism 3 . Waterfall.fromPath . Waterfall.closeLoop $ path
+            Waterfall.prism 3 . Waterfall.makeShape . Waterfall.closeLoop $ path
         Just (lo, hi) = Waterfall.axisAlignedBoundingBox rawLogo
         scale = 30 / (hi ^. _x - lo ^. _x) 
         scaledLogo = rawLogo &

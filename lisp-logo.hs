@@ -1,10 +1,10 @@
 #!/usr/bin/env stack
-{- stack script --resolver lts-22.6 
+{- stack script --resolver lts-23.16 
     --package linear
     --package lens
     --package waterfall-cad
-    --extra-dep waterfall-cad-0.4.0.0
-    --extra-dep opencascade-hs-0.4.0.0
+    --extra-dep waterfall-cad-0.5.0.0
+    --extra-dep opencascade-hs-0.5.0.0
 -}
 
 import qualified Waterfall
@@ -22,7 +22,7 @@ lambda =
                 , Waterfall.lineRelative (V2 40 0) 
                 , Waterfall.bezierRelative (V2 (-29.561) (-102.33)) (V2 (-64.433) (-172.76)) (V2 (-112) (-250))
                 ]
-        solidify = Waterfall.prism 1 . Waterfall.fromPath . Waterfall.closeLoop
+        solidify = Waterfall.prism 1 . Waterfall.makeShape . Waterfall.closeLoop
     in Waterfall.mirror (unit _y) . Waterfall.scale (V3 0.03 0.03 1) $ solidify path
 
 center :: Waterfall.Solid -> Waterfall.Solid 
