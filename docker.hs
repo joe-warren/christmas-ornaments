@@ -70,7 +70,7 @@ fin =
       a = cyl & W.translate (unit _x ^* 5)
       b = cyl & W.translate (unit _x ^* negate 5)
       f = (a `W.intersection` b) 
-            & W.scale (V3 1 1 0.2)
+            & W.scale (V3 1 1 0.3)
   in case W.axisAlignedBoundingBox f of
         Nothing -> f
         Just (lo, hi) -> W.translate (unit _y ^* (hi ^. _y)) f
@@ -88,7 +88,9 @@ cubeLocs =
   <> [V3 4 0 2]
   <> [V3 x 1 0 | x <- [1..4]]
   <> [V3 x (-1) 0 | x <- [1..4]]
-
+  <> [V3 x 1 1 | x <- [2..4]]
+  <> [V3 x (-1) 1 | x <- [3..4]]
+  <> [V3 4 1 2]
 oneCube :: W.Solid
 oneCube =
   W.centeredCube
@@ -132,12 +134,15 @@ ornament =
           & W.rotate (unit _x) (pi/2)
   in whale <> W.translate (unit _z ^* 23 + unit _x * com) torus
  
-halfOrnament :: W.Solid 
-halfOrnament = ornament `W.intersection` (W.centeredCube & W.translate (unit _y /2) & W.uScale 200)
+halfOrnament :: Bool -> W.Solid 
+halfOrnament b = 
+  let f = if b then W.intersection else W.difference
+  in f ornament (W.centeredCube & W.translate (unit _y /2) & W.uScale 200) 
 
 main :: IO ()
 main = do
   W.writeSTL 0.1 "docker.stl" ornament
-  W.writeSTL 0.1 "docker-half.stl" halfOrnament
+  W.writeSTL 0.1 "docker-half-a.stl" $ halfOrnament True
+  W.writeSTL 0.1 "docker-half-b.stl" $ halfOrnament False
 
 
