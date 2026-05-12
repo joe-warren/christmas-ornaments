@@ -21,3 +21,5 @@ Generated using Haskell & [Waterfall CAD](https://hackage.haskell.org/package/wa
 ![Terraform Ornament](images/15.jpg)
 ![Rust Ornament](images/16.jpg)
 ![Ruby Ornament](images/17.jpg)
+![k8s Ornament](images/18.jpg)
+![Docker Ornament](images/19.jpg)
